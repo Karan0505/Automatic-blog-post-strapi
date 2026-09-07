@@ -1,0 +1,48 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_pages",
+  "info": {
+    "singularName": "about-page",
+    "pluralName": "about-pages",
+    "displayName": "About Page",
+    "description": "About Page modular Page Builder and SEO configurations"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "about-blocks.about-hero",
+        "about-blocks.about-pillars",
+        "about-blocks.about-pitch",
+        "shared-blocks.featured-authors",
+        "shared-blocks.newsletter-cta",
+        "shared-blocks.cta-banner",
+        "shared-blocks.rich-text",
+        "shared-blocks.feature-cards"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

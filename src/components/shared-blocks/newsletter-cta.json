@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_blocks_newsletter_ctas",
+  "info": {
+    "displayName": "Newsletter CTA",
+    "icon": "mail",
+    "description": "Newsletter subscription form banner"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string",
+      "default": "Join 25,000+ Engineers"
+    },
+    "title": {
+      "type": "string",
+      "default": "Stay ahead of modern full-stack engineering trends"
+    },
+    "description": {
+      "type": "text",
+      "default": "Get weekly architectural blueprints, headless CMS deep dives, and performance tips straight to your inbox."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Subscribe Free"
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "Enter your professional email..."
+    }
+  }
+}

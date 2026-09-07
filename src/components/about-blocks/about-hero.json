@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_about_blocks_about_heroes",
+  "info": {
+    "displayName": "About Hero",
+    "icon": "compass",
+    "description": "About page mission and headline spotlight"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string",
+      "default": "Our Mission & Vision"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Bridging Software Architecture & Design Craft"
+    },
+    "description": {
+      "type": "text",
+      "default": "Chronicle was founded to elevate technical writing into thoughtful, durable engineering artifacts. We unpack modern headless web architecture, design system engineering, and developer ergonomics."
+    },
+    "icon": {
+      "type": "string",
+      "default": "Compass"
+    }
+  }
+}

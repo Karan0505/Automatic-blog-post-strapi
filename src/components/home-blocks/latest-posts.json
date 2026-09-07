@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_home_blocks_latest_posts",
+  "info": {
+    "displayName": "Latest Posts",
+    "icon": "newspaper",
+    "description": "Latest publications feed grid"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Latest Publications"
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "Freshly released technical essays and development guides"
+    },
+    "browseArchiveText": {
+      "type": "string",
+      "default": "Browse Archive"
+    },
+    "browseArchiveLink": {
+      "type": "string",
+      "default": "/blog"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 6
+    }
+  }
+}

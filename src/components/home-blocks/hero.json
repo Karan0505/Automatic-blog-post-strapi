@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_home_blocks_heroes",
+  "info": {
+    "displayName": "Home Hero",
+    "icon": "sparkles",
+    "description": "Featured story and hero banner for Home page"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string",
+      "default": "Featured Editorial"
+    },
+    "heading": {
+      "type": "string",
+      "default": "Architectural Decisions in Modern Web Systems"
+    },
+    "subheading": {
+      "type": "text",
+      "default": "Deep dives into modern frontend ergonomics, headless CMS architectures, and high-performance design patterns."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Explore Publications"
+    },
+    "buttonLink": {
+      "type": "string",
+      "default": "/blog"
+    }
+  }
+}

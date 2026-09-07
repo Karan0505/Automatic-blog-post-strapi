@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_blog_social_links",
+  "info": {
+    "displayName": "Social Link",
+    "icon": "link",
+    "description": "Author or blog social links"
+  },
+  "options": {},
+  "attributes": {
+    "platform": {
+      "type": "enumeration",
+      "enum": ["twitter", "github", "linkedin", "youtube", "website", "instagram"],
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

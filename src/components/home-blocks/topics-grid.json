@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_home_blocks_topics_grids",
+  "info": {
+    "displayName": "Topics Grid",
+    "icon": "layer-group",
+    "description": "Category cards grid for topics exploration"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Explore Core Topics"
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "Curated collections across software architecture and engineering"
+    },
+    "viewAllText": {
+      "type": "string",
+      "default": "View All Topics"
+    },
+    "viewAllLink": {
+      "type": "string",
+      "default": "/blog"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 4
+    }
+  }
+}

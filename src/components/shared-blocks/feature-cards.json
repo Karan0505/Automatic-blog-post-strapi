@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_blocks_feature_cards",
+  "info": {
+    "displayName": "Feature Cards Grid",
+    "icon": "grid",
+    "description": "Grid of highlighted feature cards"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared-blocks.feature-card-item"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_blocks_feature_card_items",
+  "info": {
+    "displayName": "Feature Card Item",
+    "icon": "star",
+    "description": "Individual feature card"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "string",
+      "default": "Zap"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

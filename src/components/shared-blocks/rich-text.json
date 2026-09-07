@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_blocks_rich_texts",
+  "info": {
+    "displayName": "Rich Text",
+    "icon": "align-left",
+    "description": "Markdown and rich formatted text block"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

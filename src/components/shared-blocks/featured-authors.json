@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_blocks_featured_authors",
+  "info": {
+    "displayName": "Featured Authors",
+    "icon": "users",
+    "description": "Featured editorial team showcase"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Featured Contributors"
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "Written by seasoned engineers, tech leads, and systems designers"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 3
+    }
+  }
+}

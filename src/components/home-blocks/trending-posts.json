@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_home_blocks_trending_posts",
+  "info": {
+    "displayName": "Trending Posts",
+    "icon": "bolt",
+    "description": "Trending posts showcase grid"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Trending Insights"
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "Most engaging engineering blueprints and architectural patterns"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 2
+    }
+  }
+}

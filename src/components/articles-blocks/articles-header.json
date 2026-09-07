@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_articles_blocks_articles_headers",
+  "info": {
+    "displayName": "Articles Header",
+    "icon": "book",
+    "description": "Publication archive header banner"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string",
+      "default": "Publication Archive"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Articles & Insights"
+    },
+    "description": {
+      "type": "text",
+      "default": "In-depth perspectives, architectural case studies, and engineering tutorials authored by practitioners."
+    },
+    "icon": {
+      "type": "string",
+      "default": "BookOpen"
+    }
+  }
+}

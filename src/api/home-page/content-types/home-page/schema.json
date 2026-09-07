@@ -1,0 +1,49 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "Home Page",
+    "description": "Home Page modular Page Builder and SEO configurations"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "home-blocks.hero",
+        "home-blocks.topics-grid",
+        "home-blocks.trending-posts",
+        "home-blocks.latest-posts",
+        "shared-blocks.featured-authors",
+        "shared-blocks.newsletter-cta",
+        "shared-blocks.cta-banner",
+        "shared-blocks.rich-text",
+        "shared-blocks.feature-cards"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

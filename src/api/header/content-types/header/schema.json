@@ -1,0 +1,56 @@
+{
+  "kind": "singleType",
+  "collectionName": "headers",
+  "info": {
+    "singularName": "header",
+    "pluralName": "headers",
+    "displayName": "Header & Navbar",
+    "description": "Header navigation bar, logo, and action button"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "default": "CHRONICLE"
+    },
+    "siteSubtitle": {
+      "type": "string",
+      "default": "Tech & Architecture",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "navLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "layout.nav-link",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "ctaButtonText": {
+      "type": "string",
+      "default": "Explore Stories",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "ctaButtonLink": {
+      "type": "string",
+      "default": "/blog"
+    }
+  }
+}

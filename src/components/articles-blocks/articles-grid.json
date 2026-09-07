@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_articles_blocks_articles_grids",
+  "info": {
+    "displayName": "Articles Feed Grid",
+    "icon": "grid",
+    "description": "Article cards feed with category filter, tag filter, and pagination"
+  },
+  "options": {},
+  "attributes": {
+    "showCategoryFilter": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTagFilter": {
+      "type": "boolean",
+      "default": true
+    },
+    "pageSize": {
+      "type": "integer",
+      "default": 6
+    },
+    "columns": {
+      "type": "integer",
+      "default": 3
+    }
+  }
+}

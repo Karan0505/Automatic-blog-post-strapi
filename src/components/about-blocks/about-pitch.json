@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_about_blocks_about_pitches",
+  "info": {
+    "displayName": "Editorial Pitch",
+    "icon": "envelope",
+    "description": "About page guest author submissions and pitch callout"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "string",
+      "default": "Mail"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Have a story or case study to share?"
+    },
+    "description": {
+      "type": "text",
+      "default": "We welcome guest authors and engineering teams building high-impact web products. Submit your pitch to our editorial desk."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Submit Editorial Pitch"
+    },
+    "buttonLink": {
+      "type": "string",
+      "default": "mailto:editor@chronicle.dev"
+    }
+  }
+}

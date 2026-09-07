@@ -1,0 +1,115 @@
+{
+  "kind": "singleType",
+  "collectionName": "footers",
+  "info": {
+    "singularName": "footer",
+    "pluralName": "footers",
+    "displayName": "Footer",
+    "description": "Footer columns, social media links, newsletter, and copyright"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "description": {
+      "type": "text",
+      "default": "An independent tech publication exploring high-velocity software engineering, modern headless content management, and avant-garde design systems.",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "column1Title": {
+      "type": "string",
+      "default": "Navigation",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "column1Links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "layout.nav-link",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "column2Title": {
+      "type": "string",
+      "default": "Discover",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "column2Links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "layout.nav-link",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "newsletterTitle": {
+      "type": "string",
+      "default": "Dispatch",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "newsletterDescription": {
+      "type": "text",
+      "default": "Curated articles and engineering blueprints delivered to your inbox every Thursday.",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "newsletterButtonText": {
+      "type": "string",
+      "default": "Subscribe Free",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyrightText": {
+      "type": "string",
+      "default": "Chronicle Media Inc. All rights reserved.",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "twitterUrl": {
+      "type": "string",
+      "default": "https://twitter.com"
+    },
+    "githubUrl": {
+      "type": "string",
+      "default": "https://github.com"
+    },
+    "linkedinUrl": {
+      "type": "string",
+      "default": "https://linkedin.com"
+    }
+  }
+}
