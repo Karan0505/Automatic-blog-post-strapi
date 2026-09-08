@@ -347,6 +347,7 @@ export class BlogGeneratorService {
           'x-strapi-timestamp': timestamp,
         },
         body: payload,
+        signal: AbortSignal.timeout(1500),
       });
 
       if (response.ok) {
@@ -360,5 +361,227 @@ export class BlogGeneratorService {
       console.warn(`[BlogGenerator] Could not trigger Next.js cache revalidation:`, err.message);
       return false;
     }
+  }
+
+  /**
+   * Direct Publish from external MCP / API requests
+   */
+  public static async publishDirect(strapi: Core.Strapi, payload: any): Promise<any> {
+    const locale = payload.locale || 'en';
+    const rawTitle = (payload.title || '').trim();
+    if (!rawTitle) {
+      throw new Error('Title is required to publish a blog post.');
+    }
+
+    const cleanSlug = (payload.slug || rawTitle)
+      .toLowerCase()
+      .replace(/[^a-z0-9-_]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    // Resolve Category
+    let categoryDocId: string | null = null;
+    if (payload.category) {
+      const catName = String(payload.category).trim();
+      try {
+        const existingCat = await (strapi.documents('api::category.category') as any).findFirst({
+          locale,
+          filters: { name: { $eqi: catName } },
+        });
+        if (existingCat) {
+          categoryDocId = existingCat.documentId;
+        } else {
+          const newCat = await (strapi.documents('api::category.category') as any).create({
+            locale,
+            data: {
+              name: catName,
+              slug: catName.toLowerCase().replace(/[^a-z0-9-_]/g, '-'),
+              description: `Articles and publications covering ${catName}`,
+            },
+          });
+          categoryDocId = newCat?.documentId || null;
+        }
+      } catch (catErr: any) {
+        console.warn('[BlogGenerator] Category resolution warning:', catErr.message);
+      }
+    }
+
+    // Resolve Author
+    let authorDocId: string | null = null;
+    try {
+      const authorFilter = payload.author ? { name: { $eqi: String(payload.author).trim() } } : {};
+      const author = await (strapi.documents('api::author.author') as any).findFirst({
+        locale,
+        filters: authorFilter,
+      });
+      if (author) {
+        authorDocId = author.documentId;
+      }
+    } catch (authErr: any) {
+      console.warn('[BlogGenerator] Author resolution warning:', authErr.message);
+    }
+
+    // Resolve Tags
+    const tagDocIds: string[] = [];
+    if (Array.isArray(payload.tags) && payload.tags.length > 0) {
+      for (const tagName of payload.tags.slice(0, 5)) {
+        try {
+          const cleanTag = String(tagName).trim();
+          const existingTag = await (strapi.documents('api::tag.tag') as any).findFirst({
+            locale,
+            filters: { name: { $eqi: cleanTag } },
+          });
+          if (existingTag) {
+            tagDocIds.push(existingTag.documentId);
+          } else {
+            const newTag = await (strapi.documents('api::tag.tag') as any).create({
+              locale,
+              data: {
+                name: cleanTag,
+                slug: cleanTag.toLowerCase().replace(/[^a-z0-9-_]/g, '-'),
+              },
+            });
+            if (newTag?.documentId) tagDocIds.push(newTag.documentId);
+          }
+        } catch (tagErr: any) {
+          console.warn(`[BlogGenerator] Tag "${tagName}" resolution note:`, tagErr.message);
+        }
+      }
+    }
+
+    // Format content with FAQs and Conclusion if not already included
+    let fullContent = payload.content || '';
+    if (Array.isArray(payload.faqs) && payload.faqs.length > 0 && !fullContent.includes('Frequently Asked Questions')) {
+      fullContent += '\n\n## Frequently Asked Questions\n\n' +
+        payload.faqs.map((f: any) => `### ${f.question}\n\n${f.answer}`).join('\n\n');
+    }
+    if (payload.conclusion && !fullContent.includes('Conclusion')) {
+      fullContent += `\n\n## Conclusion\n\n${payload.conclusion}`;
+    }
+
+    // Calculate reading time (avg 200 words per minute)
+    const wordCount = fullContent.split(/\s+/).filter(Boolean).length;
+    const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+    // Optional Cover Image
+    let coverImageId: number | null = null;
+    if (payload.generateImage && (payload.imagePrompt || payload.title)) {
+      try {
+        const imgResult = await ImageService.generateCompressAndUpload(
+          strapi,
+          payload.imagePrompt || payload.title,
+          cleanSlug
+        );
+        coverImageId = imgResult.coverImageId;
+      } catch (imgErr: any) {
+        console.warn('[BlogGenerator] Optional image generation failed:', imgErr.message);
+      }
+    }
+
+    // Build SEO Component
+    const seoMetadata = {
+      metaTitle: payload.metaTitle || rawTitle,
+      metaDescription: payload.metaDescription || payload.excerpt || rawTitle,
+      keywords: payload.focusKeyword || (payload.tags || []).join(', '),
+    };
+    const seoPayload = SeoService.buildSeoComponent(seoMetadata, locale, cleanSlug, coverImageId);
+
+    // Build Table of Contents
+    const tableOfContents: Array<{ title: string; anchor: string; level: number }> = [];
+    if (Array.isArray(payload.headings) && payload.headings.length > 0) {
+      for (const h of payload.headings) {
+        tableOfContents.push({
+          title: h.text,
+          anchor: h.anchor || h.text.toLowerCase().replace(/[^a-z0-9-_]/g, '-'),
+          level: h.level || 2,
+        });
+      }
+    } else {
+      const h2Matches = fullContent.matchAll(/^##\s+(.+)$/gm);
+      for (const match of h2Matches) {
+        const text = match[1].trim();
+        tableOfContents.push({
+          title: text,
+          anchor: text.toLowerCase().replace(/[^a-z0-9-_]/g, '-'),
+          level: 2,
+        });
+      }
+    }
+
+    const postDataPayload: Record<string, any> = {
+      title: rawTitle,
+      slug: cleanSlug,
+      excerpt: payload.excerpt || fullContent.slice(0, 160).trim() + '...',
+      content: fullContent,
+      readingTime,
+      featured: false,
+      trending: false,
+      aiGenerated: true,
+      aiModel: 'mcp-publisher',
+      aiPrompt: payload.title,
+      aiCostUsd: 0,
+      moderationStatus: 'approved',
+      workflowStatus: 'approved',
+      seo: seoPayload,
+      tableOfContents,
+      ...(coverImageId ? { coverImage: coverImageId } : {}),
+      ...(categoryDocId ? { category: { set: [categoryDocId] } } : {}),
+      ...(authorDocId ? { author: { set: [authorDocId] } } : {}),
+      ...(tagDocIds.length > 0 ? { tags: { set: tagDocIds } } : {}),
+    };
+
+    // Create in Strapi 5 Document Service
+    const createdPost = await (strapi.documents('api::post.post') as any).create({
+      locale,
+      data: postDataPayload,
+    });
+
+    const documentId = createdPost.documentId;
+
+    // Publish
+    await (strapi.documents('api::post.post') as any).publish({
+      documentId,
+      locale,
+    });
+
+    // Revalidate Next.js cache
+    const revalidated = await this.triggerRevalidation(locale, cleanSlug);
+
+    // Enqueue translations to other locales if available
+    try {
+      const localesService = strapi.plugin('i18n')?.service('locales');
+      const configuredLocales = await localesService?.find();
+      if (Array.isArray(configuredLocales)) {
+        const targetLocales = configuredLocales
+          .map((l: any) => l.code)
+          .filter((c: string) => c !== locale);
+
+        for (const targetLoc of targetLocales) {
+          await TranslationQueueService.enqueue(strapi, {
+            contentType: 'api::post.post',
+            documentId,
+            sourceLocale: locale,
+            targetLocale: targetLoc,
+            autoPublish: true,
+          });
+        }
+      }
+    } catch (queueErr: any) {
+      console.warn('[BlogGenerator] Translation queue dispatch note:', queueErr.message);
+    }
+
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
+    const liveUrl = `${siteUrl}/${locale}/blog/${cleanSlug}`;
+
+    return {
+      success: true,
+      status: 'published',
+      documentId,
+      title: rawTitle,
+      slug: cleanSlug,
+      liveUrl,
+      revalidation: revalidated,
+      message: `✅ Blog "${rawTitle}" has been successfully published to Strapi and is now LIVE!`,
+    };
   }
 }

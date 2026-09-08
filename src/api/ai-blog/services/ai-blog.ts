@@ -13,6 +13,10 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     return BlogGeneratorService.generateAndPublish(strapi, request);
   },
 
+  async publish(payload: any) {
+    return BlogGeneratorService.publishDirect(strapi, payload);
+  },
+
   async getBudgetStatus() {
     const dailySpend = await costLedger.getDailySpend();
     const dailyBudget = parseFloat(process.env.AI_DAILY_BUDGET_USD || '5.00');

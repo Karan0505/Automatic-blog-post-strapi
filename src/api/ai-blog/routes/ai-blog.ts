@@ -21,9 +21,39 @@ export default {
       },
     },
     {
+      method: 'POST',
+      path: '/ai-blog/publish',
+      handler: 'api::ai-blog.ai-blog.publish',
+      config: {
+        auth: false,
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
       method: 'GET',
       path: '/ai-blog/status',
       handler: 'api::ai-blog.ai-blog.status',
+      config: {
+        auth: false,
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'GET',
+      path: '/ai-blog/categories',
+      handler: 'api::ai-blog.ai-blog.categories',
+      config: {
+        auth: false,
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/ai-blog/check-duplicate',
+      handler: 'api::ai-blog.ai-blog.checkDuplicate',
       config: {
         auth: false,
         policies: [],

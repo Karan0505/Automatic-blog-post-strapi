@@ -53,6 +53,26 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     }
   },
 
+  async publish(ctx: any) {
+    try {
+      const payload = ctx.request.body;
+      if (!payload || !payload.title || !payload.content) {
+        return ctx.badRequest('Missing required fields "title" and "content" in request body.');
+      }
+
+      const service = (strapi.service('api::ai-blog.ai-blog') as any);
+      if (!service) {
+        return ctx.internalServerError('AI Blog service is not registered.');
+      }
+
+      const result = await service.publish(payload);
+      return ctx.send(result);
+    } catch (err: any) {
+      strapi.log.error('[AiBlogController] Publish error:', err);
+      return ctx.badRequest(err.message || 'Failed to publish blog post.');
+    }
+  },
+
   async status(ctx: any) {
     try {
       const service = (strapi.service('api::ai-blog.ai-blog') as any);
@@ -64,6 +84,47 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     } catch (err: any) {
       strapi.log.error('[AiBlogController] Status error:', err);
       return ctx.badRequest(err.message || 'Failed to get budget status.');
+    }
+  },
+
+  async categories(ctx: any) {
+    try {
+      const locale = ctx.query?.locale || 'en';
+      const categories = await (strapi.documents('api::category.category') as any).findMany({
+        locale,
+      });
+      return ctx.send({ data: categories });
+    } catch (err: any) {
+      strapi.log.error('[AiBlogController] Categories error:', err);
+      return ctx.badRequest(err.message || 'Failed to fetch categories.');
+    }
+  },
+
+  async checkDuplicate(ctx: any) {
+    try {
+      const { title, slug, locale = 'en' } = ctx.request.body || {};
+      if (!title && !slug) {
+        return ctx.send({ exists: false, matches: [] });
+      }
+      const filters: any = {};
+      if (slug && title) {
+        filters.$or = [{ title: { $eqi: title } }, { slug: { $eqi: slug } }];
+      } else if (title) {
+        filters.title = { $eqi: title };
+      } else if (slug) {
+        filters.slug = { $eqi: slug };
+      }
+      const matches = await (strapi.documents('api::post.post') as any).findMany({
+        locale,
+        filters,
+      });
+      return ctx.send({
+        exists: matches.length > 0,
+        matches,
+      });
+    } catch (err: any) {
+      strapi.log.error('[AiBlogController] Check duplicate error:', err);
+      return ctx.badRequest(err.message || 'Failed to check duplicate.');
     }
   },
 

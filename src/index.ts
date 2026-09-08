@@ -116,6 +116,9 @@ export default {
           'api::ai-blog.ai-blog.generate',
           'api::ai-blog.ai-blog.status',
           'api::ai-blog.ai-blog.retryTranslation',
+          'api::ai-blog.ai-blog.publish',
+          'api::ai-blog.ai-blog.categories',
+          'api::ai-blog.ai-blog.checkDuplicate',
         ];
         for (const action of i18nActions) {
           const existing = await strapi
