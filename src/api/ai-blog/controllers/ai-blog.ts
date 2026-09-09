@@ -143,4 +143,16 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
       return ctx.badRequest(err.message || 'Failed to retry translation.');
     }
   },
+
+  async backfillCovers(ctx: any) {
+    try {
+      const service = (strapi.service('api::ai-blog.ai-blog') as any);
+      const res = await service.backfillCovers();
+      return ctx.send(res);
+    } catch (err: any) {
+      strapi.log.error('[AiBlogController] Backfill covers error:', err);
+      return ctx.badRequest(err.message || 'Failed to backfill cover images.');
+    }
+  },
 });
+

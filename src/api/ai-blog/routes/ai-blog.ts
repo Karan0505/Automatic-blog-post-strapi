@@ -70,5 +70,16 @@ export default {
         middlewares: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/ai-blog/backfill-covers',
+      handler: 'api::ai-blog.ai-blog.backfillCovers',
+      config: {
+        auth: false,
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };
+

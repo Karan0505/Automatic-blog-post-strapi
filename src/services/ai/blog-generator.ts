@@ -197,12 +197,26 @@ export class BlogGeneratorService {
 
       // 8. Optional Image Generation with Built-in Sharp WebP Compression
       let coverImageId: number | null = null;
-      if (request.generateImage) {
+      if (request.imageUrl) {
+        try {
+          const imgResult = await ImageService.downloadCompressAndUpload(
+            strapi,
+            request.imageUrl,
+            generated.slug,
+            generated.title,
+            request.imageCompressionConfig
+          );
+          coverImageId = imgResult.coverImageId;
+        } catch (imgErr: any) {
+          console.warn('[BlogGenerator] Direct image download failed:', imgErr.message);
+        }
+      } else if (request.generateImage !== false) {
         const imageResult = await ImageService.generateCompressAndUpload(
           strapi,
-          generated.imagePrompt || generated.title,
+          generated.imagePrompt || `${generated.title} ${request.topic}`,
           generated.slug,
-          request.imageCompressionConfig
+          request.imageCompressionConfig,
+          { category: generated.category || request.category, tags: generated.tags }
         );
         coverImageId = imageResult.coverImageId;
         actualCostUsd += imageResult.costUsd;
@@ -463,16 +477,30 @@ export class BlogGeneratorService {
     const wordCount = fullContent.split(/\s+/).filter(Boolean).length;
     const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
-    // Optional Cover Image
+    // Optional Cover Image (Direct URL or AI Generation)
     let coverImageId: number | null = null;
-    if (payload.generateImage && (payload.imagePrompt || payload.title)) {
+    if (payload.imageUrl) {
       try {
-        const imgResult = await ImageService.generateCompressAndUpload(
+        const imgResult = await ImageService.downloadCompressAndUpload(
           strapi,
-          payload.imagePrompt || payload.title,
-          cleanSlug
+          payload.imageUrl,
+          cleanSlug,
+          payload.title
         );
         coverImageId = imgResult.coverImageId;
+      } catch (imgErr: any) {
+        console.warn('[BlogGenerator] Direct image download failed:', imgErr.message);
+      }
+    } else if (payload.generateImage !== false && (payload.imagePrompt || payload.title)) {
+      try {
+        const imageResult = await ImageService.generateCompressAndUpload(
+          strapi,
+          payload.imagePrompt || `${payload.title} ${payload.category || ''}`,
+          cleanSlug,
+          undefined,
+          { category: payload.category, tags: payload.tags }
+        );
+        coverImageId = imageResult.coverImageId;
       } catch (imgErr: any) {
         console.warn('[BlogGenerator] Optional image generation failed:', imgErr.message);
       }

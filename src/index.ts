@@ -119,7 +119,9 @@ export default {
           'api::ai-blog.ai-blog.publish',
           'api::ai-blog.ai-blog.categories',
           'api::ai-blog.ai-blog.checkDuplicate',
+          'api::ai-blog.ai-blog.backfillCovers',
         ];
+
         for (const action of i18nActions) {
           const existing = await strapi
             .query('plugin::users-permissions.permission')

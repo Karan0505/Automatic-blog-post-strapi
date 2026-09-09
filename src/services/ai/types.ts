@@ -31,6 +31,7 @@ export interface AiBlogRequest {
   author?: string;   // name or documentId
   autoPublish?: boolean;
   generateImage?: boolean;
+  imageUrl?: string;
   imageCompressionConfig?: ImageCompressionOptions;
   featured?: boolean;
   idempotencyKey?: string;
